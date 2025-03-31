@@ -8,7 +8,7 @@
       <div class="chat_info" v-if="!chatHistory.length">
         <div class="logo">
           <img
-            src="https://www.xxtinfo.com/fasmanage/applet/ai.gif"
+            src="ai.gif"
             mode=""
             class="icon"
           />
@@ -34,14 +34,14 @@
             <img src="@images/service.png" class="icon" alt="" />
             <div class="label">客服热线：</div>
             <div class="value">
-              <a href="tel:0571-58001119">0571-58001119</a>
+              <a href="tel:"></a>
             </div>
           </div>
           <div class="row">
             <img src="@images/phone.png" class="icon" alt="" />
             <div class="label">商务咨询：</div>
             <div class="value">
-              <a href="tel:13575484933">13575484933</a>
+              <a href=""></a>
             </div>
           </div>
         </div>

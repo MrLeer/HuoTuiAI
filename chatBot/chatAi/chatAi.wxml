@@ -36,15 +36,15 @@
       <view class="row">
         <image src="/package/chatBot/images/service.png" class="icon" alt="" />
         <view class="label">客服热线：</view>
-        <view class="value" catchtap="callPhone" data-phone="0571-58001119">
-          0571-58001119
+        <view class="value" catchtap="callPhone" data-phone="">
+       
         </view>
       </view>
       <view class="row">
         <image src="/package/chatBot/images/phone.png" class="icon" alt="" />
         <view class="label">商务咨询：</view>
-        <view class="value" catchtap="callPhone" data-phone="13575484933">
-          13575484933
+        <view class="value" catchtap="callPhone" data-phone="">
+        
         </view>
       </view>
     </view>
@@ -58,7 +58,7 @@
           <view class="chat-message {{item.role === 'user' ? 'user-message' : 'ai-message'}}">
             <view class="chat-message-container">
               <view wx:if="{{item.role == 'assistant'}}" class="ai_name">
-                <image src="https://www.xxtinfo.com/fasmanage/applet/ai.png" class="icon" mode="" />
+                <image src="/package/chatBot/images/ai.png" class="icon" mode="" />
                 <view class="name">火腿AI</view>
               </view>
               <view class="loader" wx:if="{{isLoading && index == chatHistory.length - 1}}"></view>

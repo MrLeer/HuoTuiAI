@@ -59,7 +59,7 @@ Page({
 
   // 显示 AI 对话列表
   async lookList() {
-    let res = await app.request("/ai/agent/getAiTalkList", {});
+    let res = await app.request("", {});
     let data = res.data.data;
     this.setData({
       talkList: data,
@@ -105,7 +105,7 @@ Page({
 
   // 获取AI对话内容
   async getAiTalk(id) {
-    let res = await app.request(`/ai/agent/getAiTalk/${id}`);
+    let res = await app.request(``);
     let data = res.data.data;
     this.setData({
       chatHistory: data,
@@ -116,7 +116,7 @@ Page({
 
   // 生成会话ID
   async generatedSessionId() {
-    let res = await app.request("/ai/agent/generatedSessionId", {});
+    let res = await app.request("", {});
     let data = res.data.data;
     this.setData({
       sessionId: data,
@@ -131,21 +131,6 @@ Page({
       if (item.role === "assistant") {
         item.markdownContent = towxml(item.content, "markdown", {
           theme: "light",
-          // events: {
-          //   tap: (event) => {
-          //     let text = event._relatedInfo.anchorTargetText;
-          //     wx.setClipboardData({
-          //       data: text,
-          //       success() {
-          //         wx.showToast({
-          //           title: "复制成功",
-          //           icon: "none",
-          //           duration: 2000,
-          //         });
-          //       },
-          //     });
-          //   },
-          // },
         });
       }
     });
@@ -366,7 +351,7 @@ Page({
     };
 
     requestTask = wx.request({
-      url: config.requestUrl + "/ai/agent/chat",
+      url: config.requestUrl + "",
       method: "POST",
       data: JSON.stringify(query),
       header: {
@@ -427,7 +412,7 @@ Page({
       requestTask = null;
     }
     let { sessionId } = this.data;
-    let res = await app.$http.post(`/ai/agent/stopChat/${sessionId}`);
+    let res = await app.$http.post(``);
     console.log(res, "停止对话");
     this.setData({
       sendType: 1,

@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "decode": "/package/chatBot/towxml/decode",
+    "audio-player": "/package/chatBot/towxml/audio-player/audio-player",
+    "table": "/package/chatBot/towxml/table/table",
+    "img": "/package/chatBot/towxml/img/img"
+  }
+}

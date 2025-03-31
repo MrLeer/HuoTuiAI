@@ -1,0 +1,149 @@
+<page-meta page-style="{{ show ? 'overflow: hidden;' : '' }}" />
+<!-- 自定义导航 -->
+<view class="topbar" style="height:{{navBarHeight}}px;">
+  <view class="navigationBar" style="height:{{menuHeight}}px; margin-top: {{menuTop}}px;">
+    <view class="back" catch:tap="back">
+      <van-icon name="arrow-left" color='#000000' size='30rpx' />
+    </view>
+
+    <view class="list" catch:tap="lookList">
+      <image src="/package/chatBot/images/list.png" mode="" class="icon" />
+    </view>
+    <view class="name">火腿AI</view>
+  </view>
+</view>
+
+<view class="container" style="height:{{windowHeight}}px; top: {{navBarHeight}}px;">
+  <!-- 首次进入 -->
+  <view class="chat_info" wx:if="{{!chatHistory.length}}">
+    <image src="{{pink}}/applet/ai.gif" mode="" class="logo" />
+    <image src="/package/chatBot/images/hi.png" mode="" class="hi" />
+
+    <view class="chat_tip">专注消防数字化服务</view>
+    <view class="btn_tip_group">
+      <view class="row">
+        <view class="item" data-value="平台操作问题" catch:tap="checkSend">平台操作问题</view>
+        <view class="item" data-value="消防知识咨询" catch:tap="checkSend">消防知识咨询</view>
+      </view>
+      <view class="row">
+        <view class="item" data-value="规范标准查询" catch:tap="checkSend">规范标准查询</view>
+        <view class="item" data-value="故障处理建议" catch:tap="checkSend">故障处理建议</view>
+      </view>
+    </view>
+    <view class="customer_box">
+      <view class="title">联系我们</view>
+
+      <view class="row">
+        <image src="/package/chatBot/images/service.png" class="icon" alt="" />
+        <view class="label">客服热线：</view>
+        <view class="value" catchtap="callPhone" data-phone="0571-58001119">
+          0571-58001119
+        </view>
+      </view>
+      <view class="row">
+        <image src="/package/chatBot/images/phone.png" class="icon" alt="" />
+        <view class="label">商务咨询：</view>
+        <view class="value" catchtap="callPhone" data-phone="13575484933">
+          13575484933
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 对话列表 -->
+  <view class="chat-history" wx:if="{{chatHistory.length}}">
+    <scroll-view scroll-y="true" class="message-list" scroll-with-animation="true" scroll-top="{{scrollTop}}" id="scrollView">
+      <view class="list" id="list">
+        <block wx:for="{{chatHistory}}" wx:key="index">
+          <view class="chat-message {{item.role === 'user' ? 'user-message' : 'ai-message'}}">
+            <view class="chat-message-container">
+              <view wx:if="{{item.role == 'assistant'}}" class="ai_name">
+                <image src="https://www.xxtinfo.com/fasmanage/applet/ai.png" class="icon" mode="" />
+                <view class="name">火腿AI</view>
+              </view>
+              <view class="loader" wx:if="{{isLoading && index == chatHistory.length - 1}}"></view>
+
+              <view class="chat-message-item">
+                <text selectable="true" user-select="true" wx:if="{{item.role === 'user'}}"> {{item.content}}</text>
+                <towxml wx:if="{{item.role === 'assistant'}}" nodes="{{item.markdownContent}}" />
+              </view>
+
+              <view class="stopSession" wx:if="{{stopSession && index == chatHistory.length - 1}}">已停止会话</view>
+
+              <block wx:if="{{ item.role === 'assistant' && item.content !== '' && (index !== chatHistory.length - 1 || lastCopy) }}">
+                <view class="chat_actions">
+                  <view class="item" catch:tap="copyMessage" data-index="{{index}}">
+                    <image src="/package/chatBot/images/copy.png" class="icon" />
+                    <view class="label">复制内容</view>
+                  </view>
+                  <view class="item" catch:tap="updateMessage" data-index="{{index}}">
+                    <image src="/package/chatBot/images/update.png" class="icon" />
+                    <view class="label">重新生成</view>
+                  </view>
+                </view>
+              </block>
+
+            </view>
+          </view>
+        </block>
+      </view>
+
+    </scroll-view>
+  </view>
+
+</view>
+<!-- 输入部分 -->
+<view class="bar_bg" wx:if="{{longPress}}">
+  <view class="bar_box">
+    <view wx:for="{{bars}}" wx:key="index" class="bar" style="height: {{item}}%"></view>
+  </view>
+</view>
+
+<view class="input_box" style="bottom: {{keyboardHeight}}px;">
+  <view class="chat_input_box {{longPress ? 'open' : ''}} {{stopClass}}">
+    <image src="/package/chatBot/images/{{inputType == 2 ? 'keyboard' : 'voice'}}.png" class="icon" catch:tap="toggleInputType" />
+
+    <view class="chat-input" wx:if="{{inputType == 1}}">
+      <textarea auto-height show-confirm-bar="{{false}}" adjust-position="{{false}}" bindinput="onInput" bindfocus="onFocus" bindblur="onBlur" placeholder="有什么问题尽管问我" value="{{inputText}}" class="textarea" placeholder-class="placeholder" />
+    </view>
+
+
+    <view class="chat_voice_tip" wx:if="{{inputType == 2}}">
+      <view class="tip" bindtouchmove="checkCancel" bindlongpress="startLongPress" bindtouchend="stopLongPress">{{!stopClass?'按住 说话':'松手 取消'}}</view>
+    </view>
+
+    <view class="chat_btn" catch:tap="sendMessage" wx:if="{{inputType == 1 && sendType == 1}}">
+      <image src="/package/chatBot/images/send.png" class="icon" />
+    </view>
+
+    <view class="chat_btn_voice" wx:if="{{inputType == 2 && sendType == 1}}">
+    </view>
+
+    <view class="chat_btn" bind:tap="stopChat" wx:if="{{sendType == 2}}">
+      <view class="stop"></view>
+    </view>
+
+  </view>
+
+</view>
+
+
+<van-popup show="{{ show }}" position="left" custom-style="height:100%" bind:close="onClose">
+  <view class="pop_box">
+    <view class="title" style="margin-top: {{menuTop}}px;">对话记录</view>
+
+    <view class="add" catch:tap="addChat">
+      <image src="/package/chatBot/images/addchat.png" mode="" class="icon" />
+      <view class="value">新建对话</view>
+    </view>
+
+    <view class="list">
+      <block wx:for="{{talkList}}" wx:key="this">
+        <view class="item" data-id="{{item.sessionId}}" catch:tap="getTalkInfo">
+          {{item.subject}}
+        </view>
+      </block>
+    </view>
+
+  </view>
+</van-popup>

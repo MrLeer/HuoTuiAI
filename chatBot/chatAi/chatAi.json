@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "towxml": "/package/chatBot/towxml/towxml"
+  },
+  "navigationStyle": "custom",
+  "backgroundColor": "#ffffff",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTitleText": "火腿AI"
+}

@@ -182,11 +182,6 @@ const currentChunk = ref(""); // 当前流式数据的块
 onMounted(() => {
   checkLogin();
 
-  // localStorage.setItem(
-  //   "aiToken",
-  //   "h9n-d8DPrcIWJ4ikE4QJfrY0qnEAZB4bAnvUSiujyB8OblUZThtU7PPyzIvVtMEn"
-  // );
-  // generatedSessionId();
 });
 
 // 主要逻辑入口
@@ -216,9 +211,7 @@ const getUrlParam = (name) => {
 // 微信登录
 const redirectToAuth = () => {
   // 构造微信授权URL
-  const appid = "wx1dadb7c066a6c838"; // 微信公众号AppID
-  // const appid = "wx8b23e74bd57c6fa2"; // 测试公众号AppID
-  // const redirectUri = encodeURIComponent(`${api}/ai/agent/auth/wxGzhAuth`); // 授权回调地址
+   const appid = "wx8b23e74bd57c6fa2"; // 测试公众号AppID
   const redirectUri = encodeURIComponent(window.location.href); // 授权回调地址
   const scope = "snsapi_userinfo"; // 弹出授权页面，可通过openid拿到昵称、性别、所在地
   const state = "STATE"; // 可选参数，用于防CSRF攻击
@@ -251,7 +244,7 @@ const redirectToAuth = () => {
 
 // 微信公众号用户授权登录 返回token
 const getToken = async (code) => {
-  let res = await http.get("/ai/agent/auth/wxGzhAuth", {
+  let res = await http.get("", {
     params: {
       code,
     },
@@ -266,7 +259,7 @@ const getToken = async (code) => {
 // 生成会话ID
 const sessionId = ref("");
 const generatedSessionId = async () => {
-  let res = await http.post("/ai/agent/generatedSessionId");
+  let res = await http.post("");
   if (res.code == 200) {
     sessionId.value = res.data;
   }
@@ -319,8 +312,6 @@ const addMessageToHistory = (content, role) => {
 };
 
 // AI接口请求方法
-// const controller = new AbortController();
-// const signal = controller.signal;
 
 const aiResponse = async (message) => {
   const query = {
@@ -375,7 +366,7 @@ const renderChunk = (chunk) => {
 // 停止会话
 const stopChat = async () => {
   console.log("停止会话请求");
-  let res = await http.post(`/ai/agent/stopChat/${sessionId.value}`);
+  let res = await http.post(``);
   // controller.abort();
   sendType.value = 1;
   isLoading.value = false;
@@ -410,7 +401,7 @@ const showPopup = async () => {
     return;
   }
 
-  let res = await http.post("/ai/agent/getAiTalkList", {});
+  let res = await http.post("", {});
   let data = res.data;
   talkList.value = data;
   stopSession.value = false;
@@ -434,7 +425,7 @@ const getTalkInfo = async (id) => {
     }, 100);
   }
 
-  let res = await http.post(`/ai/agent/getAiTalk/${id}`);
+  let res = await http.post(``);
   let data = res.data;
   chatHistory.splice(0);
   Object.assign(chatHistory, data);
